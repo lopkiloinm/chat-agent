@@ -32,11 +32,11 @@ interface Assistant {
 
 interface SidebarProps {
   isCollapsed: boolean
-  onToggle: () => void
+  onToggleAction: () => void
   isMobile: boolean
 }
 
-export default function Sidebar({ isCollapsed, onToggle, isMobile }: SidebarProps) {
+export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: SidebarProps) {
   const pathname = usePathname()
   const [assistants, setAssistants] = useState<Assistant[]>([
     { id: "search", name: "Search", href: "/search", icon: Search },
@@ -117,7 +117,7 @@ export default function Sidebar({ isCollapsed, onToggle, isMobile }: SidebarProp
           {!isCollapsed && <span className="font-medium">origen</span>}
         </div>
         {!isMobile && (
-          <Button variant="ghost" size="icon" onClick={onToggle}>
+          <Button variant="ghost" size="icon" onClick={onToggleAction}>
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </Button>
         )}

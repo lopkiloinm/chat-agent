@@ -2,8 +2,8 @@
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
+    ignoreDuringDevs: true
   },
-  transpilePackages: ['lucide-react'],
-};
+}
 
 export default nextConfig;
