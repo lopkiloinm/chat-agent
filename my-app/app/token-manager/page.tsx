@@ -1,27 +1,49 @@
 "use client"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Coins } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import ChatInput from "@/components/chat-input"
 
 export default function TokenManagerPage() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSend = async (message: string) => {
     setIsLoading(true)
+    const chatId = encodeURIComponent(message.toLowerCase().replace(/\s+/g, "-"))
+    addChatToSidebar(chatId, message)
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ question: message }),
+        body: JSON.stringify({ question: message, type: "token" }),
         headers: { "Content-Type": "application/json" },
       })
       const data = await response.json()
-      console.log(data)
+
+      localStorage.setItem(
+        `chat_${chatId}`,
+        JSON.stringify([
+          { role: "user", content: message },
+          { ...data, assistant: "token" },
+        ])
+      )
+
+      router.push(`/chats/${chatId}`)
     } catch (error) {
       console.error(error)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const addChatToSidebar = (chatId: string, title: string) => {
+    const chats = JSON.parse(localStorage.getItem("recentChats") || '{"today": []}')
+    const newChat = { id: chatId, title, timestamp: Date.now() }
+    chats.today = [newChat, ...chats.today]
+    localStorage.setItem("recentChats", JSON.stringify(chats))
+    window.dispatchEvent(new Event("recentChatsUpdated"))
   }
 
   return (

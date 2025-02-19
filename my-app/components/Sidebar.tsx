@@ -173,15 +173,6 @@ export default function Sidebar({ isCollapsed, onToggle, isMobile }: SidebarProp
                       <span className="truncate">{chat.title}</span>
                     </SidebarItem>
                   ))}
-                  <SidebarItem href="/chats/blockchain-basics" isActive={pathname === "/chats/blockchain-basics"}>
-                    <span className="truncate">Blockchain Basics</span>
-                  </SidebarItem>
-                  <SidebarItem href="/chats/origen-overview" isActive={pathname === "/chats/origen-overview"}>
-                    <span className="truncate">Origen AI Platform Overview</span>
-                  </SidebarItem>
-                  <SidebarItem href="/chats/usdt-transfer" isActive={pathname === "/chats/usdt-transfer"}>
-                    <span className="truncate">USDT Transfer</span>
-                  </SidebarItem>
                 </CollapsibleSection>
                 <CollapsibleSection title="7 days">
                   <SidebarItem>
