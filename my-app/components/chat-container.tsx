@@ -8,9 +8,10 @@ import ChatInput from "@/components/chat-input"
 interface ChatContainerProps {
   children: React.ReactNode
   placeholder: string
+  onSendAction: (message: string) => Promise<void>
 }
 
-export default function ChatContainer({ children, placeholder }: ChatContainerProps) {
+export default function ChatContainer({ children, placeholder, onSendAction }: ChatContainerProps) {
   const [isVisible, setIsVisible] = useState(true)
   const chatRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLDivElement>(null)
@@ -39,7 +40,7 @@ export default function ChatContainer({ children, placeholder }: ChatContainerPr
         {children}
       </div>
       <div ref={inputRef} className="sticky bottom-0 bg-white border-t">
-        <ChatInput placeholder={placeholder} />
+        <ChatInput placeholder={placeholder} onSendAction={onSendAction} />
       </div>
     </div>
   )

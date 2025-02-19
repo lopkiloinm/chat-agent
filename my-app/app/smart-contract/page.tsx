@@ -1,8 +1,30 @@
+"use client"
+
 import { FileCode } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import ChatInput from "@/components/chat-input"
+import { useState } from "react"
 
 export default function SmartContractPage() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSend = async (message: string) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        body: JSON.stringify({ question: message }),
+        headers: { "Content-Type": "application/json" },
+      })
+      const data = await response.json()
+      console.log(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <>
       <div className="flex-1 flex flex-col items-center justify-center max-w-3xl mx-auto w-full px-4 py-8">
@@ -32,7 +54,10 @@ export default function SmartContractPage() {
         </div>
       </div>
       <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <ChatInput placeholder="Ask about smart contracts and blockchain interactions..." />
+        <ChatInput 
+          placeholder="Ask about smart contracts and blockchain interactions..." 
+          onSendAction={handleSend}
+        />
       </div>
     </>
   )

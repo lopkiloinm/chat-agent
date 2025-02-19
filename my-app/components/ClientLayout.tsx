@@ -52,11 +52,7 @@ export default function ClientLayout({
         {isMobile && !isCollapsed && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={toggleSidebar} />
         )}
-        <Sidebar 
-          isCollapsed={isCollapsed} 
-          onToggleAction={toggleSidebar} 
-          isMobile={isMobile} 
-        />
+        <Sidebar isCollapsed={isCollapsed} onToggle={toggleSidebar} isMobile={isMobile} />
         <main
           className={`flex-1 flex flex-col bg-white dark:bg-gray-900 ${
             isMobile ? "pt-16 mt-[var(--toolbar-height)]" : isCollapsed ? "md:pl-[60px]" : "md:pl-[240px]"

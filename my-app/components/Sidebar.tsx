@@ -22,6 +22,7 @@ import { usePathname } from "next/navigation"
 import { SidebarSection } from "@/components/sidebar/sidebar-section"
 import { SidebarItem } from "@/components/sidebar/sidebar-item"
 import { CollapsibleSection } from "@/components/sidebar/collapsible-section"
+import { useRecentChats } from "@/hooks/useRecentChats"
 
 interface Assistant {
   id: string
@@ -32,11 +33,11 @@ interface Assistant {
 
 interface SidebarProps {
   isCollapsed: boolean
-  onToggleAction: () => void
+  onToggle: () => void
   isMobile: boolean
 }
 
-export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: SidebarProps) {
+export default function Sidebar({ isCollapsed, onToggle, isMobile }: SidebarProps) {
   const pathname = usePathname()
   const [assistants, setAssistants] = useState<Assistant[]>([
     { id: "search", name: "Search", href: "/search", icon: Search },
@@ -48,6 +49,7 @@ export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: Sideb
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const recentChats = useRecentChats()
 
   useEffect(() => {
     const savedMode = localStorage.getItem("darkMode")
@@ -117,7 +119,7 @@ export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: Sideb
           {!isCollapsed && <span className="font-medium">origen</span>}
         </div>
         {!isMobile && (
-          <Button variant="ghost" size="icon" onClick={onToggleAction}>
+          <Button variant="ghost" size="icon" onClick={onToggle}>
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </Button>
         )}
@@ -166,6 +168,11 @@ export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: Sideb
             <SidebarSection title="Chats">
               <div className="space-y-4">
                 <CollapsibleSection title="Today">
+                  {recentChats.today?.map((chat) => (
+                    <SidebarItem key={chat.id} href={`/chats/${chat.id}`} isActive={pathname === `/chats/${chat.id}`}>
+                      <span className="truncate">{chat.title}</span>
+                    </SidebarItem>
+                  ))}
                   <SidebarItem href="/chats/blockchain-basics" isActive={pathname === "/chats/blockchain-basics"}>
                     <span className="truncate">Blockchain Basics</span>
                   </SidebarItem>
@@ -175,17 +182,6 @@ export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: Sideb
                   <SidebarItem href="/chats/usdt-transfer" isActive={pathname === "/chats/usdt-transfer"}>
                     <span className="truncate">USDT Transfer</span>
                   </SidebarItem>
-                  <SidebarItem>
-                    <span className="truncate">Initial Greeting Exchange</span>
-                  </SidebarItem>
-                </CollapsibleSection>
-                <CollapsibleSection title="Yesterday">
-                  <SidebarItem>
-                    <span className="truncate">Cryptocurrency Market Analysis</span>
-                  </SidebarItem>
-                  <SidebarItem>
-                    <span className="truncate">Smart Contract Development</span>
-                  </SidebarItem>
                 </CollapsibleSection>
                 <CollapsibleSection title="7 days">
                   <SidebarItem>
@@ -194,19 +190,16 @@ export default function Sidebar({ isCollapsed, onToggleAction, isMobile }: Sideb
                   <SidebarItem>
                     <span className="truncate">Blockchain Scalability Solutions</span>
                   </SidebarItem>
-                  <SidebarItem>
-                    <span className="truncate">NFT Marketplace Setup</span>
-                  </SidebarItem>
                 </CollapsibleSection>
                 <CollapsibleSection title="30 days">
                   <SidebarItem>
-                    <span className="truncate">Intro to Web3 Technologies</span>
+                    <span className="truncate">Cryptocurrency Market Analysis</span>
                   </SidebarItem>
                   <SidebarItem>
-                    <span className="truncate">Crypto Wallet Security Best Practices</span>
+                    <span className="truncate">Smart Contract Development</span>
                   </SidebarItem>
                   <SidebarItem>
-                    <span className="truncate">Decentralized Identity Systems</span>
+                    <span className="truncate">NFT Marketplace Setup</span>
                   </SidebarItem>
                 </CollapsibleSection>
               </div>

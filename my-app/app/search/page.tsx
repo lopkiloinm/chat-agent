@@ -1,8 +1,54 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Search } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import ChatInput from "@/components/chat-input"
 
 export default function SearchPage() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSendMessage = async (message: string) => {
+    setIsLoading(true)
+    const chatId = encodeURIComponent(message.toLowerCase().replace(/\s+/g, "-"))
+    addChatToSidebar(chatId, message)
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        body: JSON.stringify({ question: message }),
+        headers: { "Content-Type": "application/json" },
+      })
+      const data = await response.json()
+
+      localStorage.setItem(
+        `chat_${chatId}`,
+        JSON.stringify([
+          { role: "user", content: message },
+          { ...data, assistant: "search" },
+        ])
+      )
+
+      router.push(`/chats/${chatId}`)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const addChatToSidebar = (chatId: string, title: string) => {
+    const chats = JSON.parse(localStorage.getItem("recentChats") || '{"today": []}')
+    const newChat = { id: chatId, title, timestamp: Date.now() }
+    chats.today = [newChat, ...chats.today]
+    localStorage.setItem("recentChats", JSON.stringify(chats))
+
+    // Dispatch a custom event to update the sidebar
+    window.dispatchEvent(new Event("recentChatsUpdated"))
+  }
+
   return (
     <>
       <div className="flex-1 flex flex-col items-center justify-center max-w-3xl mx-auto w-full px-4 py-8">
@@ -31,7 +77,11 @@ export default function SearchPage() {
         </div>
       </div>
       <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <ChatInput placeholder="Ask about web3, crypto, or blockchain..." />
+        <ChatInput
+          placeholder="Ask about web3, crypto, or blockchain..."
+          onSendAction={handleSendMessage}
+          isLoading={isLoading}
+        />
       </div>
     </>
   )
