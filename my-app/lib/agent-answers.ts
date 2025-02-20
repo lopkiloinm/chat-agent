@@ -153,7 +153,9 @@ export async function tokenAssistantGenerate(question = ""): Promise<any> {
                     "eth",
                     "usdt",
                     "dai",
-                    "usdc"
+                    "usdc",
+                    "apt",
+                    "rlusd"
                   ]
                 }
               },

@@ -29,7 +29,8 @@
     "react-markdown": "^9.0.3",
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.0.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vercel": "^41.1.4"
   },
   "devDependencies": {
     "@types/node": "^20",

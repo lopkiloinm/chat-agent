@@ -79,6 +79,8 @@ export function TransactionComponent({
                   <SelectItem value="usdt">USDT</SelectItem>
                   <SelectItem value="usdc">USDC</SelectItem>
                   <SelectItem value="dai">DAI</SelectItem>
+                  <SelectItem value="apt">APT</SelectItem>
+                  <SelectItem value="rlusd">RLUSD</SelectItem>
                 </SelectContent>
               </Select>
             </div>
