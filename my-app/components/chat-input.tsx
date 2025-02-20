@@ -9,15 +9,25 @@ interface ChatInputProps {
   placeholder?: string
   onSendAction: (message: string) => Promise<void>
   isLoading?: boolean
+  value?: string
+  onChange?: (value: string) => void
 }
 
-export default function ChatInput({ placeholder, onSendAction, isLoading = false }: ChatInputProps) {
-  const [message, setMessage] = useState("")
+export default function ChatInput({ 
+  placeholder, 
+  onSendAction, 
+  isLoading = false,
+  value = "",
+  onChange
+}: ChatInputProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e.target.value)
+  }
 
   const handleSend = () => {
-    if (message.trim() && onSendAction) {
-      onSendAction(message.trim())
-      setMessage("")
+    if (value.trim() && onSendAction) {
+      onSendAction(value.trim())
+      onChange?.("")
     }
   }
 
@@ -27,8 +37,8 @@ export default function ChatInput({ placeholder, onSendAction, isLoading = false
         <Input
           placeholder={placeholder}
           className="pr-32 py-6"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={value}
+          onChange={handleChange}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleSend()
@@ -36,7 +46,6 @@ export default function ChatInput({ placeholder, onSendAction, isLoading = false
           }}
         />
         <div className="absolute right-2 top-2 flex items-center gap-2">
-          
           <Button variant="ghost" size="icon" onClick={handleSend}>
             <Send className="w-4 h-4" />
           </Button>

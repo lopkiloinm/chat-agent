@@ -9,11 +9,23 @@ import ChatInput from "@/components/chat-input"
 export default function SearchPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [inputValue, setInputValue] = useState("")
+
+  const handleButtonClick = (text: string) => {
+    setInputValue(text)
+  }
 
   const handleSendMessage = async (message: string) => {
     setIsLoading(true)
     const chatId = encodeURIComponent(message.toLowerCase().replace(/\s+/g, "-"))
     addChatToSidebar(chatId, message)
+    router.push(`/chats/${chatId}`)
+    localStorage.setItem(
+      `chat_${chatId}`,
+      JSON.stringify([
+        { role: "user", content: message },
+      ])
+    )
 
     try {
       const response = await fetch("/api/chat", {
@@ -62,16 +74,16 @@ export default function SearchPage() {
         </p>
 
         <div className="grid sm:grid-cols-2 gap-4 w-full mb-8">
-          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors" onClick={() => handleButtonClick("Explain how DeFi protocols work and their main components")}>
             <p className="text-sm">Explain DeFi protocols</p>
           </Card>
-          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors" onClick={() => handleButtonClick("Compare Proof of Work vs Proof of Stake consensus mechanisms")}>
             <p className="text-sm">Compare consensus mechanisms</p>
           </Card>
-          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors" onClick={() => handleButtonClick("What are the latest trends in blockchain technology for 2024?")}>
             <p className="text-sm">Analyze recent blockchain trends</p>
           </Card>
-          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+          <Card className="p-4 hover:bg-accent cursor-pointer transition-colors" onClick={() => handleButtonClick("Explain current cryptocurrency regulations and compliance requirements")}>
             <p className="text-sm">Discuss crypto regulations</p>
           </Card>
         </div>
@@ -81,6 +93,8 @@ export default function SearchPage() {
           placeholder="Ask about web3, crypto, or blockchain..."
           onSendAction={handleSendMessage}
           isLoading={isLoading}
+          value={inputValue}
+          onChange={setInputValue}
         />
       </div>
     </>
