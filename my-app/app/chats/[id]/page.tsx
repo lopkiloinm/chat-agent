@@ -20,6 +20,7 @@ export default function DynamicChatPage() {
   const params = useParams()
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [inputValue, setInputValue] = useState("")
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,9 +38,17 @@ export default function DynamicChatPage() {
       const newUserMessage: Message = { role: "user", content: message }
       setMessages(prev => [...prev, newUserMessage])
 
+      // Determine if this is a token chat based on the last assistant message
+      const isTokenChat = messages.some(msg => 
+        msg.role === "assistant" && msg.transaction
+      )
+
       const response = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({ question: message }),
+        body: JSON.stringify({ 
+          question: message,
+          type: isTokenChat ? "token" : "search"
+        }),
         headers: { "Content-Type": "application/json" },
       })
       const data = await response.json()
@@ -115,6 +124,8 @@ export default function DynamicChatPage() {
           placeholder="Type your message..." 
           onSendAction={handleSend}
           isLoading={isLoading}
+          value={inputValue}
+          onChange={setInputValue}
         />
       </div>
     </div>

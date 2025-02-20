@@ -41,6 +41,8 @@ export default function TokenManagerPage() {
           { ...data, assistant: "token" },
         ])
       )
+
+      window.location.href = `/chats/${chatId}`
     } catch (error) {
       console.error(error)
     } finally {

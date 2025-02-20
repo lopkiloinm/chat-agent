@@ -43,7 +43,7 @@ export default function SearchPage() {
         ])
       )
 
-      router.push(`/chats/${chatId}`)
+      window.location.href = `/chats/${chatId}`
     } catch (error) {
       console.error(error)
     } finally {
