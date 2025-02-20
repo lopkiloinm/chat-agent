@@ -73,7 +73,7 @@ export default function DynamicChatPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-full bg-white dark:bg-gray-900">
+    <div className="flex flex-col min-h-full bg-white dark:bg-gray-900 overflow-hidden">
       <div className="flex-grow overflow-auto" ref={contentRef}>
         <div className="max-w-3xl mx-auto px-4 py-8">
           {messages.map((message, index) => (
@@ -119,7 +119,7 @@ export default function DynamicChatPage() {
           ))}
         </div>
       </div>
-      <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 mt-auto">
+      <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
         <ChatInput 
           placeholder="Type your message..." 
           onSendAction={handleSend}

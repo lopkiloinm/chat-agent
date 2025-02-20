@@ -32,11 +32,11 @@ export default function ChatInput({
   }
 
   return (
-    <div className="sticky bottom-0 p-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+    <div className="p-4 bg-white dark:bg-gray-900">
       <div className="relative">
         <Input
           placeholder={placeholder}
-          className="pr-32 py-6"
+          className="pr-32 py-4"
           value={value}
           onChange={handleChange}
           onKeyPress={(e) => {
@@ -45,7 +45,7 @@ export default function ChatInput({
             }
           }}
         />
-        <div className="absolute right-2 top-2 flex items-center gap-2">
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
           <Button variant="ghost" size="icon" onClick={handleSend}>
             <Send className="w-4 h-4" />
           </Button>
