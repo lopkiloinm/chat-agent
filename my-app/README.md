@@ -1,4 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chat Interface
+
+A Next.js project demonstrating structured AI responses with custom UI components.
+
+## Overview
+
+This application showcases how to create a structured chat interface with OpenAI's API, where responses follow predefined JSON schemas and are rendered using custom React components.
+
+### Key Features
+
+- **Structured AI Responses**: Uses `lib/agent-answers.ts` to generate JSON responses following specific schemas for different types of assistants
+- **Dynamic Chat UI**: `app/chats/[id]` renders AI responses using specialized components based on response type
+- **Component Library**: Custom components in `components/` folder handle different response types:
+  - Search results with RAG (Retrieval-Augmented Generation) sources
+  - Crypto transaction details
+  - More can be added by contributors
 
 ## Getting Started
 
@@ -16,21 +31,69 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Existing Assistants
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application currently includes two types of AI assistants:
 
-## Learn More
+### Search Assistant
+- Function: `searchAssistantGenerate`
+- Purpose: Provides detailed answers with RAG (Retrieval-Augmented Generation) sources
+- Response Schema:
+  - Content: Main response text
+  - Search Query: Original query used
+  - Sources: Array of 3 sources with name and summary
+- Use Case: General blockchain and crypto knowledge queries
 
-To learn more about Next.js, take a look at the following resources:
+### Token Assistant
+- Function: `tokenAssistantGenerate`
+- Purpose: Handles token transactions and operations
+- Response Schema:
+  - Content: Transaction description
+  - Transaction: Detailed object containing:
+    - Transaction Type
+    - From/To Addresses
+    - Amount
+    - Token Type (eth, usdt, dai, usdc, etc.)
+- Use Case: Token transfers and management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Extending the Application
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributors can extend the application by:
 
-## Deploy on Vercel
+1. Creating new UI components in the `components/` folder
+2. Adding a new assistant type in `lib/agent-answers.ts` with a corresponding JSON schema
+3. Updating the chat interface to render the new component based on the AI response
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Example Extension Process
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create a new component:
+```typescript
+// components/MyNewComponent.tsx
+export function MyNewComponent({ data }) {
+  // Render your custom UI
+}
+```
+
+2. Add a new assistant schema:
+```typescript
+// lib/agent-answers.ts
+export async function myNewAssistantGenerate() {
+  // Define schema and handle OpenAI API response
+}
+```
+
+3. Update the chat interface to use your component:
+```typescript
+// app/chats/[id]/page.tsx
+import { MyNewComponent } from "@/components/MyNewComponent"
+
+// Add logic to render MyNewComponent based on response type
+```
+
+## API Integration
+
+The application uses OpenAI's API to generate structured responses. Each assistant type in `lib/agent-answers.ts` defines a specific JSON schema that the AI must follow, ensuring consistent and predictable responses that can be rendered by the corresponding UI components.
+
+## Contributing
+
+Contributions are welcome! Feel free to add new assistant types and corresponding UI components to expand the application's capabilities.
