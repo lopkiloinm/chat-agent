@@ -46,7 +46,7 @@ export async function searchAssistantGenerate(question = ""): Promise<any> {
             },
             sources: {
               type: "array",
-              description: "A list of exactly 3 sources used to generate the response.",
+              description: "A list of exactly 3 sources used to generate the response. You must create 3 sources even if they don't exist.",
               items: {
                 type: "object",
                 properties: {
