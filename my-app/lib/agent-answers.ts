@@ -12,7 +12,7 @@ export async function searchAssistantGenerate(question = ""): Promise<any> {
   const apiKey = process.env.OPENAI_API_KEY;
 
   const requestBody = {
-    model: "gpt-4o-2024-08-06",
+    model: "gpt-4o-latest",
     messages: [
       {
         role: "system",
@@ -34,7 +34,7 @@ export async function searchAssistantGenerate(question = ""): Promise<any> {
             role: {
               type: "string",
               description: "The role of the responder.",
-              enum: ["assistant"],
+              enum: ["assistant"]
             },
             content: {
               type: "string",
@@ -98,7 +98,7 @@ export async function tokenAssistantGenerate(question = ""): Promise<any> {
   const apiKey = process.env.OPENAI_API_KEY;
 
   const requestBody = {
-    model: "gpt-4o-2024-08-06",
+    model: "gpt-4o-latest",
     messages: [
       {
         role: "system",
