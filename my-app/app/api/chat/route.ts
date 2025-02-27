@@ -7,8 +7,12 @@ export async function POST(req: Request) {
     const response = type === "token" 
       ? await tokenAssistantGenerate(question)
       : await searchAssistantGenerate(question)
+    
+    console.log('AI Response:', JSON.stringify(response, null, 2))
+    
     return NextResponse.json(response)
   } catch (error) {
+    console.error("Error:", error)
     return NextResponse.json({ error: "Failed to generate response" }, { status: 500 })
   }
 } 
