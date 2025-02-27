@@ -12,7 +12,7 @@ export async function searchAssistantGenerate(question = ""): Promise<any> {
   const apiKey = process.env.OPENAI_API_KEY;
 
   const requestBody = {
-    model: "chatgpt-4o-latest",
+    model: "gpt-4o",
     messages: [
       {
         role: "system",
@@ -98,7 +98,7 @@ export async function tokenAssistantGenerate(question = ""): Promise<any> {
   const apiKey = process.env.OPENAI_API_KEY;
 
   const requestBody = {
-    model: "chatgpt-4o-latest",
+    model: "gpt-4o",
     messages: [
       {
         role: "system",
